@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2F5BEA">
+<title>Мой дом</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Unbounded:wght@700&display=swap">
+<style>
+:root{--ink:#0B1230;--blue:#2F5BEA;--bg:#F2F4F9;--surface:#fff;--tint:#E3EBFF;--line:#E6EAF4;--muted:#4A5578;--soft:#7C86A6;--good:#1E9E62;--good-soft:#E3F6EC;--warn:#8A5200;--warn-soft:#FFF0D6;--track:#DDE4F4;--sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Unbounded","Inter",system-ui,sans-serif;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#EEF1FA;--bg:#090E22;--surface:#121A36;--tint:#1C2B5E;--line:#232E52;--muted:#A7B0CC;--soft:#8590B0;--good:#4CD392;--good-soft:#12321F;--warn:#F4B657;--warn-soft:#33270F;--track:#27335A;color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#EEF1FA;--bg:#090E22;--surface:#121A36;--tint:#1C2B5E;--line:#232E52;--muted:#A7B0CC;--soft:#8590B0;--good:#4CD392;--good-soft:#12321F;--warn:#F4B657;--warn-soft:#33270F;--track:#27335A;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html{height:100%;background:var(--surface)}
+body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;cursor:pointer}
+#app{height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column}
+.track{flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior:contain;padding:0 14px 24px;display:flex;flex-direction:column;gap:10px}
+.t{font:700 20px var(--display);letter-spacing:-.01em;margin:0;padding:16px 2px 2px}
+.c{background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:0 2px 10px rgba(20,40,110,.08)}
+.hd{position:sticky;top:0;z-index:3;background:var(--bg);margin:0 -14px;padding:0 14px 8px;display:flex;flex-direction:column;gap:10px}
+.hd .t{padding-bottom:2px}
+@media (max-height:700px){.hd .t{padding-top:10px}.pn .v{font-size:23px}.pn-r .v{font-size:18px}}
+.hrow{display:flex;align-items:flex-end;justify-content:space-between;gap:4px 8px;flex-wrap:wrap}
+.hrow .chips{margin-bottom:2px}
+.hd .chips{gap:4px}
+.hd .chips button{font-size:12px;padding:6px 10px}
+.hd .note{padding:8px 12px;font-size:12.5px}
+.pn{background:linear-gradient(135deg,#2F5BEA,#1D3FD1);color:#fff;border-radius:18px;padding:12px 14px;box-shadow:0 8px 20px rgba(29,63,209,.3);display:flex;flex-direction:column;gap:8px}
+.pn small{display:block;font-size:12px;font-weight:600;color:rgba(255,255,255,.9)}
+.pn .v{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.pn .u{display:block;font-size:12px;color:rgba(255,255,255,.92);margin-top:1px}
+.pn-main{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.pn-main>div{min-width:0}
+.pn-r{text-align:right;flex:none;white-space:nowrap}.pn-r .v{font-size:20px;color:#FFD873}
+.pn-st{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));border-top:1px solid rgba(255,255,255,.22);padding-top:8px}
+.pn-st>div{padding:0 8px;border-left:1px solid rgba(255,255,255,.22)}
+.pn-st>div:first-child{padding-left:0;border-left:0}
+.pn-st small{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-st b{display:block;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.25}
+.pn-st .gn{color:#9CF0C4}
+.pn-ft{border-top:1px solid rgba(255,255,255,.22);padding-top:8px;font-size:11.5px;line-height:1.35;color:rgba(255,255,255,.94)}
+.ring{position:relative;width:56px;height:56px;flex:none}
+.ring svg{display:block;width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .rt{stroke:rgba(255,255,255,.25)}
+.ring .rv{stroke:#fff;stroke-linecap:round;transition:stroke-dasharray .3s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800}
+.sum{background:linear-gradient(135deg,#3B6BFF,#1D3FD1);color:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 10px 24px rgba(29,63,209,.35)}
+.sum small{display:block;font-size:12.5px;opacity:.9}
+.sum b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.sum span{font-size:12.5px;opacity:.9}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.row em{font-style:normal;font-weight:800;color:var(--blue)}
+.sub{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.big{font-size:22px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1.2}
+.bar{height:8px;border-radius:999px;background:var(--track);overflow:hidden;margin:8px 0 6px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6E95FF,#2F5BEA);border-radius:999px;transition:width .3s}
+.note{font-size:13px;border-radius:14px;padding:10px 12px;background:var(--tint)}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.c.good{background:var(--good-soft)}.good .big,.good .sub{color:var(--good)}
+.c.side{border-left:4px solid #F2A73B}
+button.c{display:block;width:100%;border:0;text-align:left;color:inherit;font:inherit}
+button.c .sub{display:block}
+button.c:active{transform:scale(.99)}
+.badge{background:#FFD873;color:#0B1230;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:800}
+.chips{display:flex;gap:6px}
+.chips button{border:0;font-size:13px;font-weight:600;border-radius:10px;padding:8px 14px;background:var(--tint);color:var(--blue)}
+.chips button.on{background:var(--blue);color:#fff}
+h3.s{margin:8px 2px 0;font-size:13px;font-weight:700;color:var(--soft)}
+.ctl{display:flex;flex-direction:column;gap:10px}
+.ctl label,.lbl{font-weight:600;font-size:14px}
+.ctl output{font-size:18px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;text-align:right}
+.hint{margin:0;font-size:12.5px;color:var(--soft)}
+.legal{margin:0;font-size:11.5px;line-height:1.45;color:var(--soft)}
+.stp{display:flex;align-items:center;gap:10px}
+.stp button{border:0;background:var(--tint);color:var(--blue);font-weight:700;font-size:20px;width:40px;height:40px;border-radius:50%;flex:none;line-height:1}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;min-width:0;height:28px;margin:0;background:none;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--blue) 0 var(--p,50%),var(--track) var(--p,50%) 100%)}
+input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--blue) 0 var(--p,50%),var(--track) var(--p,50%) 100%)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-9px;border-radius:50%;background:#fff;border:6px solid var(--blue);box-shadow:0 2px 8px rgba(47,91,234,.4)}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#fff;border:6px solid var(--blue);box-shadow:0 2px 8px rgba(47,91,234,.4)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font-size:14px;font-weight:600;min-height:40px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 14px}
+.seg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.calc{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+.cta{border:0;background:var(--blue);color:#fff;font-weight:700;border-radius:14px;padding:14px;margin-top:4px}
+.step{position:relative;padding-left:46px}
+.step::before{content:"";position:absolute;left:16px;top:18px;width:16px;height:16px;border-radius:50%;border:2px solid var(--track)}
+.step.done::before{background:var(--blue);border-color:var(--blue)}
+nav{display:flex;background:var(--surface);border-top:1px solid var(--line)}
+nav button{flex:1;border:0;background:none;color:var(--soft);font-size:11px;font-weight:600;padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav button[aria-selected="true"]{color:var(--blue)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media (min-width:481px){html{background:#14286E}#app{box-shadow:0 0 60px rgba(0,0,0,.45)}}
+@media (prefers-reduced-motion:reduce){.bar i,.ring .rv{transition:none}}
+</style></head>
+<body>
+<div id="app">
+  <div class="track" id="track" aria-label="Экраны приложения «Мой дом»"></div>
+  <nav aria-label="Разделы" role="tablist">
+    <button type="button" role="tab" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg>Старт</button>
+    <button type="button" role="tab" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Адрес</button>
+    <button type="button" role="tab" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5l-2-2"/><path d="M4 20v-5h5"/></svg>Домой</button>
+    <button type="button" role="tab" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>Сделка</button>
+  </nav>
+</div>
+<script>
+(function(){
+  const $ = id => document.getElementById(id), D = document;
+  const B = (i,a,b,s,v,l) => `<button type="button" data-step="-1" aria-label="Меньше">−</button><input type="range" id="${i}" min="${a}" max="${b}" step="${s}" value="${v}" aria-label="${l}"><button type="button" data-step="1" aria-label="Больше">+</button>`;
+  const S = (i,l,a,b,s,v,h) => `<div class="c ctl"><div class="row"><label for="${i}">${l}</label><output id="${i}-o"></output></div><div class="stp">${B(i,a,b,s,v,l)}</div>${h ? `<p class="hint">${h}</p>` : ''}</div>`;
+  const G = (i,l,o,on,x) => `<div class="c ctl"><span class="lbl">${l}</span><div class="seg" id="${i}">${o.map(([v,t]) => `<button type="button" data-v="${v}" aria-pressed="${v == on}">${t}</button>`).join('')}</div>${x || ''}</div>`;
+
+  const slides = [
+`<div class="hd"><h2 class="t">Мой дом</h2>
+<div class="pn">
+<div class="pn-main"><div><small>Вам доступно</small><b class="v" data-k="a-lim"></b><span class="u" data-k="a-pay-s"></span></div>
+<div class="ring" role="img" aria-label="Копилка на взнос"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rt" cx="18" cy="18" r="15.5"/><circle class="rv" data-ring="a-prog" cx="18" cy="18" r="15.5" pathLength="100" stroke-dasharray="0 100"/></svg><b data-k="a-prog-p"></b></div></div>
+<div class="pn-st"><div><small>Квартира до</small><b data-k="a-price"></b></div><div><small>Взнос 20,1%</small><b data-k="a-down"></b></div><div><small>Ставка</small><b data-k="a-rate"></b></div></div>
+<div class="pn-ft"><b>Копилка на взнос:</b> <span data-k="a-prog-t"></span><br><span data-k="a-eta"></span></div>
+</div></div>
+<button type="button" class="c side" data-go="1"><b>Родился ребёнок</b><span class="sub">доступна семейная ипотека · рассчитать</span></button>
+<h3 class="s">Параметры</h3>
+${S('a-inc','Доход семьи в месяц',60000,400000,5000,150000)}
+${S('a-share','Комфортный платёж',30,50,1,40,'доля дохода семьи')}
+${S('a-sav','Уже накоплено на взнос',0,3000000,50000,600000)}
+${S('a-mon','Пополнение копилки',0,80000,1000,25000,'в месяц, в день зарплаты')}
+${G('a-term','Срок кредита',[[20,'20 лет'],[25,'25 лет'],[30,'30 лет']],30)}
+<p class="legal">Предварительный расчёт, не является одобрением. Ставка от 17,7% при кредите от 7 млн ₽ и 18,6% до 7 млн ₽, полная стоимость кредита — в индивидуальных условиях. Оценивайте свои финансовые возможности и риски.</p>
+<button type="button" class="cta" data-go="3">Подать заявку в 1 клик</button>`,
+
+`<div class="hd"><div class="hrow"><h2 class="t">Для своих</h2><div class="chips" id="d-lot"><button type="button" class="on" data-v="school" aria-pressed="true">Школа</button><button type="button" data-v="kg" aria-pressed="false">Садик</button><button type="button" data-v="ready" aria-pressed="false">Сдача</button></div></div>
+<div class="pn">
+<div class="pn-main"><div><small>Платёж в месяц</small><b class="v" data-k="d-pay"></b><span class="u" data-k="d-paysub"></span></div>
+<div class="pn-r"><small>Скидка <span class="badge" data-k="d-disc-badge"></span></small><b class="v" data-k="d-disc-big"></b></div></div>
+<div class="pn-st" style="--n:2"><div><small data-k="d-help-l">Помощь работодателя</small><b data-k="d-help-v"></b></div><div><small>Сделка</small><b>0 ₽</b></div></div>
+<div class="pn-ft" data-k="d-foot"></div>
+</div>
+<div class="note warn" id="d-warn" hidden></div></div>
+<h3 class="s">Параметры</h3>
+${S('d-price','Цена квартиры',4000000,20000000,100000,9000000)}
+${S('d-disc','Скидка застройщика',0,5,0.5,4,'по закрытому лоту «Для своих»')}
+${S('d-own','Свои деньги на взнос',0,6000000,50000,1300000)}
+<div class="c ctl"><div class="row"><span class="lbl">Помощь вашего работодателя</span><output id="d-help-o"></output></div>
+<div class="seg" id="d-help"><button type="button" data-v="sub" aria-pressed="true">На взнос</button><button type="button" data-v="int" aria-pressed="false">На проценты</button><button type="button" data-v="none" aria-pressed="false">Нет</button></div>
+<div class="stp" id="f-sub">${B('d-emp',0,1500000,50000,500000,'Субсидия на взнос')}</div>
+<div class="stp" id="f-int" hidden>${B('d-comp',0,30000,1000,10000,'Компенсация процентов в месяц')}</div>
+<p class="hint">без возврата, если вы работаете в компании срок программы</p></div>
+${G('d-kids','Детей в семье',[[0,'нет'],[1,'1'],[2,'2'],[3,'3'],[4,'4'],[5,'5+']],3)}
+${G('d-reg','Регион',[['other','Регионы'],['cap','Москва, СПб и области']],'other')}
+<div class="c ctl"><span class="lbl">Ваш расчёт</span><div class="calc"><span>Цена со скидкой: <b data-k="d-net"></b></span><span>Взнос: <b data-k="d-down"></b></span><span>Кредит: <b data-k="d-loan"></b></span><span data-k="d-fam"></span><span data-k="d-mkt"></span></div>
+<p class="legal">Семейная ипотека — по правилам с 01.10.2026, ребёнок до 7 лет; после 15 лет ставка меняется по правилам программы. Сверх лимита — рыночная ставка. Оценивайте свои финансовые возможности и риски.</p></div>
+<button type="button" class="cta" data-go="3">Перейти к сделке</button>`,
+
+`<div class="hd"><h2 class="t">Домой</h2>
+<div class="pn">
+<div class="pn-main"><div><small data-k="s-head">Ваш платёж может снизиться</small><b class="v" data-k="s-arrow"></b><span class="u">тыс. ₽ в месяц · <span data-k="s-sub"></span></span></div></div>
+<div class="pn-st" style="--n:2"><div><small>Экономия в год</small><b class="gn" data-k="s-year"></b></div><div><small>За весь срок</small><b data-k="s-total"></b></div></div>
+<div class="pn-ft" data-k="s-trig"></div>
+</div></div>
+<h3 class="s">Параметры</h3>
+${S('s-bal','Остаток долга',1000000,20000000,100000,5000000)}
+${S('s-rate','Ваша ставка сейчас',12,30,0.1,25.6)}
+${S('s-yrs','Осталось платить',5,30,1,28)}
+${G('s-when','Наша ставка',[['now','Сегодня'],['2027','Если снизится до 15%']],'now','<output data-k="s-gpb"></output>')}
+<div class="c ctl"><span class="lbl">Ваш расчёт</span><div class="calc"><span>Платёж сейчас: <b data-k="s-old"></b></span><span>Платёж у нас: <b data-k="s-new"></b></span><span>Без справок, от 1 млн ₽, до 30 лет</span></div>
+<p class="legal">Предварительный расчёт, не является одобрением. Оценивайте свои финансовые возможности и риски.</p></div>
+<button type="button" class="cta" data-go="3">Перевести в 1 клик</button>`,
+
+`<div class="hd"><h2 class="t">Сделка онлайн</h2>
+<div class="sum"><small data-k="x-l">Осталось шагов</small><b data-k="x-n">2 из 4</b><span data-k="x-s">без визита в офис</span></div></div>
+<div class="c step done"><b>Одобрение</b><p class="sub">по зарплате на карте</p></div>
+<div class="c step done"><b>Оценка квартиры · 0 ₽</b><p class="sub">оплачивает банк</p></div>
+<button type="button" class="c step" aria-pressed="false"><b>Подписание онлайн</b><span class="sub">электронная подпись · нажмите, чтобы подписать</span></button>
+<button type="button" class="c step" aria-pressed="false"><b>Регистрация · 0 ₽</b><span class="sub">ключи — после регистрации</span></button>`
+  ];
+  $('track').innerHTML = slides.map(s => `<section class="slide">${s}</section>`).join('');
+
+  /* ===== логика калькуляторов — без изменений ===== */
+  const set = (k, v) => D.querySelectorAll('[data-k="' + k + '"]').forEach(e => { e.textContent = v; });
+  const ring = (k, v) => D.querySelectorAll('[data-ring="' + k + '"]').forEach(e => e.setAttribute('stroke-dasharray', v + ' 100'));
+  const width = (k, v) => D.querySelectorAll('[data-w="' + k + '"]').forEach(e => { e.style.width = v; });
+  const rub = v => Math.round(v).toLocaleString('ru-RU') + ' ₽';
+  const mln = v => (v/1e6).toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' млн ₽';
+  const tys = v => (v/1e3).toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const pct = v => v.toLocaleString('ru-RU',{maximumFractionDigits:1}) + '%';
+  const pmt = (P, r, n) => { const i = r/12; return i === 0 ? P/n : P*i/(1-Math.pow(1+i,-n)); };
+  const fromPay = (pay, r, n) => { const i = r/12; return pay*(1-Math.pow(1+i,-n))/i; };
+  const rateFor = L => L >= 7e6 ? 0.177 : 0.186;
+  const segVal = id => $(id).querySelector('[aria-pressed="true"]').dataset.v;
+  const fill = el => el.style.setProperty('--p', ((el.value - el.min)/(el.max - el.min)*100) + '%');
+
+  D.querySelectorAll('.seg[id]').forEach(seg => seg.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    render();
+  }));
+  D.querySelectorAll('input[type=range]').forEach(x => { fill(x); x.addEventListener('input', () => { fill(x); render(); }); });
+  D.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+    const r = b.parentElement.querySelector('input[type=range]'); if(!r) return;
+    const st = parseFloat(r.step) || 1;
+    r.value = Math.min(+r.max, Math.max(+r.min, +r.value + st * +b.dataset.step));
+    r.dispatchEvent(new Event('input'));
+  }));
+
+  function start(){
+    const inc = +$('a-inc').value, share = +$('a-share').value/100, yrs = +segVal('a-term'), sav = +$('a-sav').value, mon = +$('a-mon').value;
+    $('a-inc-o').textContent = rub(inc); $('a-share-o').textContent = Math.round(share*100) + '%';
+    $('a-sav-o').textContent = rub(sav); $('a-mon-o').textContent = rub(mon);
+    const pay = inc*share, n = yrs*12;
+    let r = 0.177, L = fromPay(pay, r, n);
+    if(L < 7e6){ r = 0.186; L = fromPay(pay, r, n); }
+    const price = L/0.799, down = price - L, p = Math.min(1, sav/down);
+    set('a-lim', 'до ' + mln(L));
+    set('a-pay-s', 'платёж ' + rub(pay) + ' в месяц · ' + yrs + ' лет');
+    ring('a-prog', (p*100).toFixed(1));
+    set('a-prog-p', Math.round(p*100) + '%');
+    set('a-prog-t', rub(sav) + ' из ' + rub(down));
+    set('a-price', mln(price)); set('a-down', mln(down)); set('a-rate', pct(r*100));
+    if(sav >= down) set('a-eta', 'Взнос накоплен — можно выбирать квартиру в ЖК «Для своих».');
+    else if(mon > 0) set('a-eta', 'До взноса ' + Math.ceil((down - sav)/mon) + ' мес. при пополнении ' + rub(mon) + '. Напомним, когда цель будет близко.');
+    else set('a-eta', 'Включите автопополнение копилки — покажем, когда накопится взнос.');
+  }
+
+  const FAM = { other:[[0,0],[0.10,6e6],[0.08,8e6],[0.06,10e6],[0.04,10e6],[0.02,10e6]], cap:[[0,0],[0.12,12e6],[0.10,15e6],[0.08,18e6],[0.06,18e6],[0.04,18e6]] };
+  const LOT = {
+    school:{t:'Закрытый лот у школы', n:'школа в 5 минутах'},
+    kg:{t:'Закрытый лот у детского сада', n:'детский сад в 4 минутах'},
+    ready:{t:'Закрытый лот · сдача IV кв. 2027', n:'ключи в IV кв. 2027'}
+  };
+  function address(){
+    const help = segVal('d-help');
+    const lot = LOT[$('d-lot').querySelector('.on').dataset.v];
+    $('f-sub').hidden = help !== 'sub'; $('f-int').hidden = help !== 'int';
+    const price = +$('d-price').value, disc = +$('d-disc').value/100, own = +$('d-own').value;
+    const emp = help === 'sub' ? +$('d-emp').value : 0, compIn = help === 'int' ? +$('d-comp').value : 0;
+    const kids = +segVal('d-kids'), reg = segVal('d-reg');
+    $('d-price-o').textContent = mln(price); $('d-disc-o').textContent = pct(disc*100); $('d-own-o').textContent = rub(own);
+    const net = price*(1-disc), downAmt = Math.min(own+emp, net), loan = Math.max(0, net - downAmt), dp = downAmt/net;
+    const [fr, flim] = FAM[reg][kids];
+    const famPart = kids > 0 ? Math.min(loan, flim) : 0, mktPart = loan - famPart;
+    const mr = rateFor(loan), n = 360;
+    const pay = (famPart ? pmt(famPart, fr, n) : 0) + (mktPart ? pmt(mktPart, mr, n) : 0);
+    const comp = Math.min(compIn, pay*0.6);
+    $('d-help-o').textContent = help === 'sub' ? rub(emp) + ' на взнос' : help === 'int' ? rub(comp) + ' в месяц' : 'нет программы';
+    set('d-disc-big', '−' + rub(price*disc));
+    set('d-foot', lot.t + ' · ' + lot.n + '. Скидка ' + pct(disc*100) + ' при ипотеке у нас. Сделка за 0 ₽: оценку и регистрацию (≈12 000 ₽) оплачивает банк.');
+    set('d-help-l', help === 'sub' ? 'Помощь на взнос' : help === 'int' ? 'Помощь на проценты' : 'Помощь работодателя');
+    set('d-help-v', help === 'sub' ? rub(emp) : help === 'int' ? rub(comp) + '/мес' : 'нет');
+    set('d-disc-badge', '−' + pct(disc*100));
+    set('d-net', mln(net)); set('d-down', mln(downAmt) + ' · ' + pct(dp*100)); set('d-loan', mln(loan));
+    set('d-fam', kids > 0 ? 'Семейная часть: ' + mln(famPart) + ' под ' + pct(fr*100) : 'Без семейной ипотеки');
+    set('d-mkt', mktPart > 0 ? 'Рыночная часть: ' + mln(mktPart) + ' под ' + pct(mr*100) : '');
+    set('d-pay', rub(pay - comp));
+    set('d-paysub', comp > 0 ? 'с учётом компенсации · по договору ' + rub(pay) : 'в первые 15 лет');
+    const msgs = [];
+    if(dp < 0.201) msgs.push('Нужен взнос от 20,1% — добавьте свои деньги или выберите помощь на взнос.');
+    const w = $('d-warn'); w.hidden = !msgs.length; w.textContent = msgs.join(' ');
+  }
+
+  function home(){
+    const bal = +$('s-bal').value, cur = +$('s-rate').value/100, yrs = +$('s-yrs').value, when = segVal('s-when');
+    $('s-bal-o').textContent = mln(bal); $('s-rate-o').textContent = pct(cur*100); $('s-yrs-o').textContent = yrs + ' лет';
+    const n = yrs*12, r = when === '2027' ? 0.15 : rateFor(bal);
+    const oldP = pmt(bal, cur, n), newP = pmt(bal, r, n), dm = oldP - newP;
+    set('s-gpb', pct(r*100)); set('s-old', rub(oldP)); set('s-new', rub(newP));
+    set('s-arrow', tys(oldP) + ' → ' + tys(newP));
+    set('s-year', dm > 0 ? '≈' + Math.round(dm*12/1000).toLocaleString('ru-RU') + ' тыс. ₽' : '0 ₽');
+    set('s-total', dm > 0 ? rub(dm*n) : '—');
+    const gap = (cur - r)*100;
+    if(gap >= 2){
+      set('s-head', 'Ваш платёж может снизиться');
+      set('s-trig', 'Переход выгоден: ставка ниже на ' + gap.toLocaleString('ru-RU',{maximumFractionDigits:1}) + ' п.п. Заявка в один клик, справки не нужны.');
+      set('s-sub', 'может снизиться');
+    } else {
+      set('s-head', 'Пока переход невыгоден');
+      set('s-trig', 'Разница меньше 2 п.п. Мы сами напишем, когда переход станет выгодным.');
+      set('s-sub', 'разница меньше 2 п.п.');
+    }
+  }
+  function render(){ start(); address(); home(); }
+  render();
+
+  /* ===== навигация между экранами ===== */
+  const tr = $('track'), tabs = [...D.querySelectorAll('nav button')], names = ['start','address','home','deal'];
+  const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let at = 0, t;
+  const mark = i => { at = i; tabs.forEach((b, k) => b.setAttribute('aria-selected', k === i ? 'true' : 'false')); };
+  const go = (i, instant) => { tr.scrollTo({left: i*tr.clientWidth, behavior: instant || calm ? 'auto' : 'smooth'}); mark(i); };
+  tabs.forEach((b, k) => b.addEventListener('click', () => go(k)));
+  D.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+  tr.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(() => mark(Math.round(tr.scrollLeft/tr.clientWidth)), 60); });
+  addEventListener('resize', () => go(at, true));
+  D.querySelectorAll('.chips').forEach(c => c.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    c.querySelectorAll('button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    render();
+  }));
+
+  /* ===== шаги сделки: нажатие подтверждает шаг и все предыдущие, повторное — откатывает ===== */
+  const steps = [...D.querySelectorAll('.step')];
+  const paintDeal = () => {
+    const done = steps.filter(x => x.classList.contains('done')).length, left = 4 - done;
+    steps.forEach(x => { if(x.tagName === 'BUTTON') x.setAttribute('aria-pressed', x.classList.contains('done') ? 'true' : 'false'); });
+    set('x-l', left ? 'Осталось шагов' : 'Сделка онлайн');
+    set('x-n', left ? left + ' из 4' : 'Готово');
+    set('x-s', left ? 'без визита в офис' : 'можно получать ключи');
+  };
+  steps.forEach((s, k) => { if(s.tagName !== 'BUTTON') return; s.addEventListener('click', () => {
+    const undo = s.classList.contains('done');
+    steps.forEach((x, j) => { if(undo ? j >= k : j <= k) x.classList.toggle('done', !undo); });
+    paintDeal();
+  }); });
+  paintDeal();
+  const h = names.indexOf((location.hash || '').slice(1));
+  if(h > 0) go(h, true);
+})();
+</script>
+</body></html>
