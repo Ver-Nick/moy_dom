@@ -14,6 +14,47 @@
 html{height:100%;background:var(--surface)}
 body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
 button{font:inherit;cursor:pointer}
+/* ── переменные скроллбара ─────────────────────────────────── */
+:root{
+  --sb-thumb:#C9D4EE;
+  --sb-thumb-hover:#A6B6DE;
+  --sb-thumb-active:var(--blue);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --sb-thumb:#2C3A66;
+    --sb-thumb-hover:#3C4F87;
+    --sb-thumb-active:#6E95FF;
+  }
+}
+:root[data-theme="dark"]{
+  --sb-thumb:#2C3A66;
+  --sb-thumb-hover:#3C4F87;
+  --sb-thumb-active:#6E95FF;
+}
+
+/* ── вертикальный скроллбар экранов ────────────────────────── */
+.slide{
+  scrollbar-width:thin;                                  /* Firefox */
+  scrollbar-color:var(--sb-thumb) transparent;           /* Firefox */
+}
+.slide::-webkit-scrollbar{
+  width:8px;
+  height:0;
+}
+.slide::-webkit-scrollbar-track{
+  background:transparent;
+  margin:10px 0;                 /* «пилюля» не прилипает к краям */
+}
+.slide::-webkit-scrollbar-thumb{
+  background:var(--sb-thumb);
+  background-clip:content-box;   /* видимая часть — 4px внутри 8px */
+  border:2px solid transparent;
+  border-radius:999px;
+}
+.slide::-webkit-scrollbar-thumb:hover{ background:var(--sb-thumb-hover); background-clip:content-box; }
+.slide::-webkit-scrollbar-thumb:active{ background:var(--sb-thumb-active); background-clip:content-box; }
+.slide::-webkit-scrollbar-corner{ background:transparent; }
 #app{height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column}
 .track{flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .track::-webkit-scrollbar{display:none}
